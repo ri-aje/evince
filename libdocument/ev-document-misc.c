@@ -511,9 +511,18 @@ ev_document_misc_invert_pixbuf (GdkPixbuf *pixbuf)
 			/* Calculate pixel's offset into the data array. */
 			p = data + x * n_channels + y * rowstride;
 			/* Change the RGB values*/
-			p[0] = 255 - p[0];
-			p[1] = 255 - p[1];
-			p[2] = 255 - p[2];
+			// p[0] = 255 - p[0];
+			// p[1] = 255 - p[1];
+			// p[2] = 255 - p[2];
+			// make sure to just adjust the near "white" back ground. found on
+			// https://askubuntu.com/questions/191579/how-to-change-pdf-background-color-in-evince
+			if (245 <= p[0] && p[0] <= 255 &&
+							245 <= p[1] && p[1] <= 255 &&
+							245 <= p[2] && p[2] <= 255) {
+				p[0] = 204; /* cc */
+				p[1] = 232; /* e8 */
+				p[2] = 207; /* cf */
+			}
 		}
 	}
 }
